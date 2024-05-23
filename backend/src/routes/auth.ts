@@ -2,6 +2,7 @@ import {Hono} from 'hono'
 import { PrismaClient } from '@prisma/client/edge'
 import { withAccelerate } from '@prisma/extension-accelerate'
 import { sign } from 'hono/jwt';
+import { SigninValidator , SignupValidator } from '../validator';
 const authRouter = new Hono<{
     Bindings :{
         DATABASE_URL : string,
@@ -16,12 +17,19 @@ authRouter.post('/signin',async(c)=>{
     
     const body = await c.req.json();
     // Zod validation
+    const {success} = SigninValidator.safeParse(body);
+    
+    if(!success){
+        c.status(411);
+        return c.json({
+            message : "Invalid Credentials"
+        })
+    }
 
     try{
         const response = await prisma.user.findUnique({
             where : {
                 username : body.username ,
-                //bcrypt 
                 password : body.password
             }
         })
@@ -52,6 +60,15 @@ authRouter.post('/signup',async (c)=>{
       }).$extends(withAccelerate())
     const body = await c.req.json();
     //Zod validation
+    const {success} = SignupValidator.safeParse(body);
+    
+    if(!success){
+        c.status(411);
+        return c.json({
+            message : "Invalid Credentials"
+        })
+    }
+    
     try{
         const responseUserame = await prisma.user.findFirst({
             where : {
@@ -64,7 +81,7 @@ authRouter.post('/signup',async (c)=>{
             }
         })
     //Zod validation
-        if(!(responseEmail && responseUserame)){
+    if(!(responseEmail && responseUserame)){
             const user = await prisma.user.create({
                data : {
                 username : body.username,
