@@ -64,7 +64,7 @@ authRouter.post('/signup',async (c)=>{
             }
         })
     //Zod validation
-        if(responseEmail && responseUserame){
+        if(!(responseEmail && responseUserame)){
             const user = await prisma.user.create({
                data : {
                 username : body.username,
@@ -81,7 +81,7 @@ authRouter.post('/signup',async (c)=>{
             })
         }else {
             c.status(411);
-            if(!responseEmail){
+            if(responseEmail){
                 return c.json({
                     message : "Email not available"
                 })
