@@ -5,6 +5,10 @@ export default {
     "./src/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
+    fontFamily : {
+      heading : ["Satisfy", "cursive"],
+      normal : ["Poetsen One", "sans-serif"]
+    },
     extend: {},
   },
   plugins: [],
