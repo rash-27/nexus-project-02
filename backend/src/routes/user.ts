@@ -1,3 +1,5 @@
+import { PrismaClient } from '@prisma/client/edge'
+import { withAccelerate } from '@prisma/extension-accelerate'
 import {Hono} from 'hono'
 import { verify } from 'hono/jwt'
 const userRouter = new Hono<{
@@ -34,7 +36,33 @@ userRouter.use('/*',async(c , next)=>{
 
 })
 
-userRouter.get('/me', (c) => {
+userRouter.get('/me', async(c) => {
+    const prisma = new PrismaClient({
+        datasourceUrl: c.env?.DATABASE_URL,
+      }).$extends(withAccelerate())
+
+    try{
+        const id = c.get("userId");
+        const user = await prisma.user.findUnique({
+            where : {
+                id : id
+            }
+        })
+        if(user){
+            c.status(200);
+            return c.json({
+                name : user.name,
+                email : user.email,
+                username : user.username
+            })
+        }
+
+    }catch(e){
+        c.status(411);
+        return c.json({
+            message : "Something went wrong while fetching user data"
+        })
+    }
     return c.text('User Info')
   })
 userRouter.get('/check-auth',(c)=>{

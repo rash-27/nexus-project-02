@@ -1,28 +1,44 @@
-import Button from "../components/Button";
+import { useEffect, useState } from "react";
 import useAuth from "../hooks/useAuth";
+import axios from "axios";
+import ProfileCard from "../components/ProfileCard";
+import { useNavigate } from "react-router-dom";
+import NavBar from "../components/NavBar";
+import Loading from "./Loading";
 
 function Profile(){
-    function handleOnclick(){
-        localStorage.setItem('token',"");
-        window.location.href = '/'
-    }
-    const {isAuthorized ,isLoading}= useAuth();
-    if(!isLoading && !isAuthorized){
-        window.location.href = "/invalid-page"
-    }
-    return <div className="h-screen bg-yellow-300">
-        <div className="flex justify-between bg-gray-600">
-            <div className="font-heading text-2xl  px-4 flex flex-col justify-center items-center">
-                <div className="text-center text-white font-black text-white">My Restaurant</div>
-            </div>
-        <div className="px-4 h-16">
-        <Button name="Log out" onClick={handleOnclick} />
-        </div>
-        </div>
-        <div className="text-center font-normal py-4 text-3xl md:text-5xl ">
-            <span className="bg-clip-text text-transparent bg-gradient-to-r from-pink-500 to-violet-500">Profile Page</span>
-        </div>
+    const [personData ,setPersonData]= useState({username : '', email:'', name:''});
+    const navigate = useNavigate();
+    useEffect(()=>{
+        const token = localStorage.getItem("token");
+        axios.get('http://localhost:8787/api/v1/me',{
+            headers : {
+                Authorization : token
+            }
+        }).then((response)=>{
+            setPersonData({
+                username : response.data.username,
+                email : response.data.email,
+                name : response.data.name
+            })
+        }).catch(()=>{
 
+        })
+    },[])
+    const {isAuthorized ,isLoading}= useAuth();
+    if(isLoading)return <Loading />
+    if(!isLoading && !isAuthorized){
+        navigate("/");
+    }
+    return <div className="h-screen bg-gradient-to-r from-pink-500 to-yellow-500 backdrop-blur bg-no-repeat bg-cover bg-center">
+        <NavBar />
+        <div className="text-center font-normal py-4 text-3xl md:text-5xl ">
+            <span className="text-white">Profile Page</span>
+        </div>
+        <div>
+            
+        </div>
+        <ProfileCard personDetails={personData} />
     </div>
 }
 
