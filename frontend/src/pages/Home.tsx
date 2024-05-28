@@ -6,7 +6,7 @@ import useAuth from "../hooks/useAuth";
 function Home(){
     const {isAuthorized } = useAuth();
     const navigate = useNavigate();
-    return <div className="h-screen bg-[url('HomeBackground.jpg')] flex flex-col bg-center ">
+    return <div className="h-screen bg-[url('/HomeBackground.jpg')] flex flex-col bg-center ">
         <div className="flex flex-col">
         <NavBar />
         <div className="flex justify-center">
