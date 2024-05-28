@@ -4,9 +4,10 @@ import { useEffect, useState } from "react";
 function useAuth(){
     const [isAuthorized , setIsAuthorized] = useState(false);
     const [isLoading , setIsLoading] = useState(true);
+    const BACKEND_URL = import.meta.env.VITE_BACKEND_URL  
     useEffect(()=>{
         const token = localStorage.getItem("token");
-        axios.get('http://localhost:8787/api/v1/check-auth',{
+        axios.get(BACKEND_URL+'/api/v1/check-auth',{
             headers:{
                 Authorization : token
         }}).then(()=>{
