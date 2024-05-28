@@ -21,6 +21,7 @@ function Signin(){
     const [loading , setLoading] = useState(false)
     const {isAuthorized , isLoading} = useAuth();
     const navigate = useNavigate()
+    const BACKEND_URL=import.meta.env.VITE_BACKEND_URL  
     async function handleOnclick (){
 
         const {success , error} = SigninSchema.safeParse({
@@ -39,7 +40,7 @@ function Signin(){
         if(success){
             setLoading(true);
             setError({username :'',password:''});
-            axios.post('http://localhost:8787/api/auth/signin',{
+            axios.post(BACKEND_URL+'/api/auth/signin',{
                 username : username,
                 password : password
             }).then((response)=>{

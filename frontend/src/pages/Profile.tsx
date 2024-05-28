@@ -9,9 +9,10 @@ import Loading from "./Loading";
 function Profile(){
     const [personData ,setPersonData]= useState({username : '', email:'', name:''});
     const navigate = useNavigate();
+    const BACKEND_URL = import.meta.env.VITE_BACKEND_URL  
     useEffect(()=>{
         const token = localStorage.getItem("token");
-        axios.get('http://localhost:8787/api/v1/me',{
+        axios.get(BACKEND_URL+'/api/v1/me',{
             headers : {
                 Authorization : token
             }

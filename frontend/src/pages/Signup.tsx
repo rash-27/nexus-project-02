@@ -24,6 +24,7 @@ function Signup(){
     const [alert , setAlert] = useState('')
     const {isAuthorized , isLoading} = useAuth();
     const navigate = useNavigate();
+    const BACKEND_URL = import.meta.env.VITE_BACKEND_URL  
     function handleOnclick (){
 
         const {success , error} = SignupSchema.safeParse({
@@ -45,7 +46,7 @@ function Signup(){
         if(success){
             setError({username :'',password:'',email:'',name:''});
             setLoading(true);
-            axios.post('http://localhost:8787/api/auth/signup',{
+            axios.post(BACKEND_URL+'/api/auth/signup',{
                 username : username,
                 password : password,
                 name : name ,
