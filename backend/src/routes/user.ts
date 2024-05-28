@@ -37,7 +37,9 @@ userRouter.use('/*',async(c , next)=>{
 userRouter.get('/me', (c) => {
     return c.text('User Info')
   })
-  
+userRouter.get('/check-auth',(c)=>{
+    return c.text("You are authenticated ")
+})
 userRouter.get('/restaurants', (c) => {
     return c.text('Restaurants info')
   })

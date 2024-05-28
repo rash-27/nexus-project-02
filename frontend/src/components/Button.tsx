@@ -9,7 +9,7 @@ interface ButtonProps {
 function Button({name , onClick ,link}:ButtonProps){
     return (
         <>
-        <div className="py-5 text-center">
+        <div className="py-2 text-center">
             <button onClick={onClick} className="font-normal md:text-xl bg-pink-300 w-32 h-12 border rounded-lg border-gray-700 mb-4">
                 {name}
             </button>
