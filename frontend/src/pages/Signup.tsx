@@ -57,7 +57,7 @@ function Signup(){
                 navigate("/profile")
                 setLoading(false);
             }).catch((e)=>{
-                setAlert(e.response?.data?.message)
+                setAlert(e.response?.data?.message || "Error while connecting to DB!")
                 setLoading(false)
             });
         }
