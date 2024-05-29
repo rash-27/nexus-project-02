@@ -24,7 +24,7 @@
 
 # Project description 
 
-This project is a basic authentication system for a restaurant website where users can sign up, login and logout. Authentication is done using JWTs. The backend is hosted on Cloudflare Workers and the frontend is hosted on Vercel. Zod is used for validation for both frontend and backend. The frontend is made responsive for all screen sizes using Tailwind CSS.
+This project is a basic authentication system for a restaurant website where users can sign up, login and logout. Authentication is done using JWTs. The backend is hosted on Cloudflare Workers and the frontend is hosted on Vercel. Zod is used for validation for both frontend and backend. The frontend is made responsive for all screen sizes using Tailwind CSS. Password is hashed using bcryptJs.
 
 ## Stack
 
