@@ -21,3 +21,13 @@
 - Run `npm run dev` to start the development server in your localhost
 
 ### Frontend hosted on [Vercel] (https://nexus-project-02.vercel.app/)
+
+# Project description 
+
+This project is a basic authentication system for a restaurant website where users can sign up, login and logout. Authentication is done using JWTs. The backend is hosted on Cloudflare Workers and the frontend is hosted on Vercel. Zod is used for validation for both frontend and backend. The frontend is made responsive for all screen sizes using Tailwind CSS.
+
+## Stack
+
+- Frontend : React, Tailwind CSS , Zod
+
+- Backend : Cloudflare Workers, Wrangler, Zod , Typescript
