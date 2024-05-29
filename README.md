@@ -1,6 +1,6 @@
 # Steps to setup project locally
 
-## For Back-End
+## For Back-End ( in backend )
 
 - Copy .env.example file to .env file and update the values
 
@@ -12,7 +12,7 @@
 
 ### Backend hosted on [Cloudflare Workers] (https://backend.rashmik2705.workers.dev)
 
-## For Front-End 
+## For Front-End ( in frontend )
 
 - Copy .env.example file to .env file and update the values
 
