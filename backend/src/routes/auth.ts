@@ -3,6 +3,7 @@ import { PrismaClient } from '@prisma/client/edge'
 import { withAccelerate } from '@prisma/extension-accelerate'
 import { sign } from 'hono/jwt';
 import { SigninValidator , SignupValidator } from '../validator';
+import bcrypt from 'bcryptjs'
 const authRouter = new Hono<{
     Bindings :{
         DATABASE_URL : string,
@@ -27,17 +28,26 @@ authRouter.post('/signin',async(c)=>{
     }
 
     try{
+        
         const response = await prisma.user.findUnique({
             where : {
                 username : body.username ,
-                password : body.password
             }
         })
         if(response){
-            const token = await sign({id : response.id }, c.env.JWT_SECRET)
-            return c.json({
-                token
-            })
+
+            const isCorrectPassword = await bcrypt.compare(body.password,response.password);
+            if(isCorrectPassword){
+                const token = await sign({id : response.id }, c.env.JWT_SECRET)
+                return c.json({
+                    token
+                })
+            }else {
+                c.status(411)
+                return c.json({
+                    message : "Error while verifying your details"
+                })
+            }
         }else {
             c.status(403)
             return c.json({
@@ -82,11 +92,15 @@ authRouter.post('/signup',async (c)=>{
         })
     //Zod validation
     if(!(responseEmail && responseUserame)){
+
+            const genSaltGenerated = await bcrypt.genSalt(10);
+            const hashedPassword = await bcrypt.hash(body.password, genSaltGenerated);
+
             const user = await prisma.user.create({
                data : {
                 username : body.username,
                 //Bcrypt
-                password : body.password,
+                password : hashedPassword,
                 email : body.email,
                 name : body.name 
                }
